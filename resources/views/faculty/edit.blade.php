@@ -1,5 +1,5 @@
 @extends('layout')
-
+<!-- <H1>Ibrahim</H1> -->
 @section('content')
 <div class="container mt-5">
     <div class="row">
