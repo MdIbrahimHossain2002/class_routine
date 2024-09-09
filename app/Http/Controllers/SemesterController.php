@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\Faculty;
 use App\Models\Semester;
 use Illuminate\Http\Request;
+use Brian2694\Toastr\Facades\Toastr;
+
 
 class SemesterController extends Controller
 {
@@ -12,7 +16,8 @@ class SemesterController extends Controller
      */
     public function index()
     {
-        //
+        $data = Semester::latest()->paginate(10);
+         return view('semester.index', compact('data'));
     }
 
     /**
@@ -20,7 +25,9 @@ class SemesterController extends Controller
      */
     public function create()
     {
-        //
+        $faculty = Faculty::pluck('title', 'id');
+        $department = Department::pluck('title', 'id');        
+        return view('semester.create',compact('faculty','department'));
     }
 
     /**
@@ -28,7 +35,14 @@ class SemesterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(['faculty_id' => 'required', 'department_id' => 'required', 'title' => 'required']);
+        $data = new Semester();
+        $data->faculty_id = $request->faculty_id;
+        $data->department_id = $request->department_id;
+        $data->title = $request->title;
+        $data->save();
+        Toastr::success('Operation Succesfull', 'Success');
+        return redirect()->route('semester.index');
     }
 
     /**
@@ -44,7 +58,10 @@ class SemesterController extends Controller
      */
     public function edit(Semester $semester)
     {
-        //
+        $faculty = Faculty::pluck('title', 'id');
+        $department = Department::where('faculty_id',$semester->faculty_id)->pluck('title', 'id');        
+        return view('semester.edit', compact('semester','department', 'faculty'));
+    
     }
 
     /**
@@ -52,14 +69,24 @@ class SemesterController extends Controller
      */
     public function update(Request $request, Semester $semester)
     {
-        //
+        $request->validate(['department_id' => 'required','faculty_id'=>'required', 'title'=>'required']);
+        $semester->department_id = $request->department_id;
+        $semester->faculty_id = $request->faculty_id;
+        $semester->title = $request->title;
+        $semester->update();
+        Toastr::success('Operation Succesfull', 'Success');
+        return redirect()->route('semester.index'); 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Semester $semester)
+    public function destroy($id)
     {
-        //
+        $semester = Semester::findOrfail($id);
+        $semester->delete();
+        Toastr::success('Operation Succesfull', 'Success');
+        return redirect()->route('semester.index');
+    
     }
 }

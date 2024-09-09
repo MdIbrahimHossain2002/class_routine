@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laravel 7</title>
+    <title>Class Rotuine</title>
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -27,7 +27,8 @@
             background-color: #e1e5e8;
             padding-top: 20px;
             padding-bottom: 20px;
-            top: 56px; /* Adjust for header height */
+            top: 56px;
+            /* Adjust for header height */
         }
 
         .sidebar a {
@@ -45,42 +46,29 @@
             margin-left: 250px;
             padding: 20px;
             flex-grow: 1;
-            margin-top: 56px; /* Adjust for header height */
+            margin-top: 56px;
+           
         }
-
-        /* Custom CSS to make input fields square-shaped */
         .square-input {
             border-radius: 0;
-            /* Removes any rounded corners */
-            height: 40px;
-            /* Set a fixed height to ensure square appearance */
+            height: 40px;          
             padding: 0.375rem 0.75rem;
-            /* Default Bootstrap padding for consistency */
             box-shadow: none;
-            /* Optional: Removes any shadow effect */
         }
 
-        /* Select2 adjustment to match square design */
         .select2-container--bootstrap-5 .select2-selection--single {
-            border-radius: 0;
-            /* Makes the Select2 dropdown square-shaped */
+            border-radius: 0;        
             height: 40px;
-            /* Matches height with input fields */
             padding: 0.375rem 0.75rem;
-            /* Adjust padding */
             border: 1px solid #ced4da;
-            /* Matches default input border */
             background-color: #fff;
-            /* Background color to match input fields */
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
 
         .select2-container--bootstrap-5 .select2-selection--single:hover,
         .select2-container--bootstrap-5 .select2-selection--single:focus {
             border-color: #80bdff;
-            /* Match default Bootstrap hover/focus border */
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-            /* Adds a blue shadow on focus/hover */
         }
 
         .header {
@@ -110,7 +98,7 @@
     <div class="header">
         <a class="navbar-brand" href="{{ route('faculty.index') }}">City University</a>
         <a class="btn btn-danger logout" href="#"
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="fas fa-sign-out-alt"></i> Logout
         </a>
         <form id="logout-form" action="#" method="POST" style="display: none;">
@@ -121,12 +109,15 @@
         <a class="navbar-brand" href="{{ route('faculty.index') }}">Add/Rem Faculty</a>
         <a class="nav-link" href="{{ route('department.index') }}">Add/Rem Department</a>
         <a class="nav-link" href="{{ route('program.index')}}">Add/Rem Program</a>
-        <a class="nav-link" href="">Add/Rem Semester</a>        
-        <a class="nav-link" href="">Add/Rem Teacher</a>
-        <a class="nav-link" href="">Add/Rem Room</a>
-        <a class="nav-link" href="">Add/Rem Course</a>
-        <a class="nav-link" href="">Add/Rem Section</a>
+        <a class="nav-link" href="{{ route('semester.index')}}">Add/Rem Semester</a>
+        <a class="nav-link" href="{{ route('teacher.index')}}">Add/Rem Teacher</a>
+        <a class="nav-link" href="{{ route('room.index')}}">Add/Rem Room</a>
+        <a class="nav-link" href="{{ route('course.index')}}">Add/Rem Course</a>
+        <a class="nav-link" href="{{ route('section.index')}}">Add/Rem Section</a>
         <a class="nav-link" href="">Add/Rem User</a>
+        <a class="nav-link" href="">Class Routine</a>
+        <a class="nav-link" href="">Client Specific Report </a>
+
     </div>
     <div class="content">
         <div class="container">
@@ -142,10 +133,51 @@
     <script>
         $(document).ready(function() {
             $('.select2').select2({
-                placeholder: 'Select Faculty',
-                theme: 'bootstrap-5', // Assuming you're using Select2 with Bootstrap 5 theme
-                width: '100%' // Ensures that Select2 uses the full width of the container
+                placeholder: 'Select',
+                theme: 'bootstrap-5', 
+                width: '100%' 
             });
+
+            $('#faculty_id').on('change', function() {
+                var facultyId = $(this).val();
+                if (facultyId) {
+                    $.ajax({
+                        url: "{{ route('getDepartments', '') }}/" + facultyId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('#department_id').empty();
+                            $('#department_id').append('<option value="">Select Department</option>');
+                            $.each(data, function(key, value) {
+                                $('#department_id').append('<option value="' + key + '">' + value + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#department_id').empty();
+                    $('#department_id').append('<option value="">Select Department</option>');
+                }
+            });
+            $('#department_id').on('change',function(){
+                var departmentID= $(this).val();                
+                if(departmentID){
+                    $.ajax({
+                        url: "{{ route('getPrograms','')}}/" +departmentID,
+                        type:"GET",
+                        dataType:"json",
+                        success:function(data){
+                            $('#program_id').empty();
+                            $('#program_id').append('<option value="">Select Program</option>')
+                            $.each(data,function(key,value){
+                            $('#program_id').append('<option value="'+key+'">'+value+'</option>');
+                            });
+                        }
+                    });
+                }else{
+                    $('#program_id').empty();
+                    $('#program_id').append('<option value="">Select Department</option>');
+                }
+            })
         });
     </script>
 </body>

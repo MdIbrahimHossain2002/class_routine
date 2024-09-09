@@ -8,6 +8,9 @@
       <h3 class="mb-0">Faculty</h3>
     </div>
     <div class="col-md-6 d-flex justify-content-end">
+      <a class="btn btn-success btn-sm mr-2" href="{{ route('faculty.import') }}">
+        <i class="fas fa-plus"></i> Import
+      </a>
       <a class="btn btn-success btn-sm" href="{{ route('faculty.create') }}">
         <i class="fas fa-plus"></i> Add Faculty Name
       </a>

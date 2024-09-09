@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Program extends Model
+class Section extends Model
 {
     use HasFactory;
     public function faculty()
@@ -16,5 +16,8 @@ class Program extends Model
     {
         return $this->belongsTo(Department::class);
     }
-    
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
 }

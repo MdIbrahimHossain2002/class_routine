@@ -10,6 +10,9 @@
 
     </div>
     <div class="col-md-6 d-flex justify-content-end">
+    <a class="btn btn-success btn-sm mr-2" href="{{ route('department.import') }}">
+        <i class="fas fa-plus"></i> Import
+      </a>
       <a class="btn btn-success btn-sm" href="{{ route('department.create') }}">
         <i class="fas fa-plus"></i> Add Department
       </a>
@@ -47,7 +50,7 @@
           </tr>
         @empty
           <tr col="30">
-            <td colspan="3" class="text-center">No data found</td>
+            <td colspan="4" class="text-center">No data found</td>
           </tr>
         @endforelse
       </tbody>

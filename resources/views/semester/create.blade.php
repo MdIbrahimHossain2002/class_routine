@@ -5,11 +5,11 @@
         <div class="col-md-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-light text-black">
-                    <h3 class="mb-0">Add Department</h3>
+                    <h3 class="mb-0">Add Semester</h3>
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('department.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('semester.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row mb-3">
                             <div class="col-sm-6">
@@ -21,6 +21,22 @@
                                     @endforeach
                                 </select>
                                 @error('faculty_id')
+                                <small class="form-text text-danger">
+                                    {{ $message }}
+                                </small>
+                                @enderror
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <label for="department_id" class="col-form-label">Department<span class="text-danger">*</span></label>
+                                <select name="department_id" id="department_id" class="form-control select2" style="width: 100%;">
+                                    <option value="">Select Department</option>
+                                    <!-- @foreach($department as $key=>$item)
+                                    <option value="{{$key}}">{{$item}}</option>
+                                    @endforeach -->
+                                </select>
+                                @error('department_id')
                                 <small class="form-text text-danger">
                                     {{ $message }}
                                 </small>
@@ -55,4 +71,5 @@
         </div>
     </div>
 </div>
+
 @endsection

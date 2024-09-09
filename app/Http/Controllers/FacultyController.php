@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Faculty;
 use Illuminate\Http\Request;
-use PhpParser\Node\Expr\New_;
 use Brian2694\Toastr\Facades\Toastr;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\FacultyImport;
+use App\Imports\UsersImport;
 
 class FacultyController extends Controller
 {
@@ -79,5 +81,24 @@ class FacultyController extends Controller
         $faculty->delete();
         Toastr::success('Operation Successful', 'Success');
         return redirect()->route('faculty.index');
+    }
+
+    
+    public function facultyImport(){
+        return view('faculty.import');
+    }
+    public function facultyImportSubmit(Request $request){
+
+
+        $request->validate([
+            'file' => 'required|mimes:xlsx'
+        ]);
+
+        // Excel::import(new UsersImport, $request->file('file')->store('temp'));
+
+        Excel::import(new FacultyImport, $request->file('file')->store('temp'));
+        Toastr::success('Operation Successful', 'Success');
+        return redirect()->route('faculty.index');
+
     }
 }

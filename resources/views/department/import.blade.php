@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('department.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('department.importSubmit') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row mb-3">
                             <div class="col-sm-6">
@@ -27,14 +27,16 @@
                                 @enderror
                             </div>
 
-                            <div class="col-sm-6">
-                                <label for="title" class="col-form-label">Title <span class="text-danger">*</span></label>
-                                <input type="text" name="title" id="title" class="form-control square-input" placeholder="Enter faculty name" style="width: 100%;">
-                                @error('title')
-                                <small class="form-text text-danger">
-                                    {{ $message }}
-                                </small>
-                                @enderror
+                            <div class="form-group col mb-4">
+                                <label for="file" class="col-sm-2 col-form-label">File</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="file" id="file" class="form-control square-input" placeholder="Enter dapartment name">
+                                    <!-- @error('title')
+                                    <small class="form-text text-danger">
+                                        {{ $message }}
+                                    </small>
+                                    @enderror -->
+                                </div>
                             </div>
                         </div>
 

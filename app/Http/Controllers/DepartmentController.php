@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\DepartmentImport;
 use App\Models\Department;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class DepartmentController extends Controller
@@ -27,7 +28,6 @@ class DepartmentController extends Controller
     {
 
         $faculty = Faculty::pluck('title', 'id');
-
         return view('department.create', compact('faculty'));
     }
 
@@ -85,5 +85,22 @@ class DepartmentController extends Controller
         $department->delete();
         Toastr::success('Operation Successful', 'Success');
         return redirect()->route('department.index');
+    }
+
+    public function departmentImport()
+    {
+
+        $faculty = Faculty::pluck('title', 'id');
+        return view('department.import', compact('faculty'));
+    }
+    public function departmentImportSubmit(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx'
+        ]);
+        $faculty_id= $request->input('faculty_id');
+        Excel::import(new DepartmentImport($faculty_id), $request->file('file')->store('temp'));
+        Toastr::success('Operation Successful', 'Success');
+        return redirect()->route('department.index',);
     }
 }
