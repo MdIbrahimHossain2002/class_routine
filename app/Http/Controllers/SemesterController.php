@@ -8,7 +8,6 @@ use App\Models\Semester;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 
-
 class SemesterController extends Controller
 {
     /**

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
+use App\Models\Course;
 use App\Models\Faculty;
 use App\Models\Program;
-use App\Models\Course;
+use App\Models\Department;
 use Illuminate\Http\Request;
+use App\Imports\CourseImport;
 use Brian2694\Toastr\Facades\Toastr;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CourseController extends Controller
 {
@@ -92,6 +94,25 @@ class CourseController extends Controller
         $course = Course::findOrfail($id);
         $course->delete();
         Toastr::success('Operation Succesfull', 'Success');
+        return redirect()->route('course.index');
+    }
+    public function courseImport(Course $course)
+    {
+        $faculty = Faculty::pluck('title', 'id');
+        $department = Department::where('faculty_id', $course->faculty_id)->pluck('title', 'id');
+        $program = Program::where('department_id', $course->department_id)->pluck('title', 'id');
+        return view('course.import', compact('faculty', 'department', 'course','program'));
+    }
+    public function courseimportSubmit(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx'
+        ]);
+        $faculty_id = $request->input('faculty_id');
+        $department_id = $request->input('department_id');
+        $program_id = $request->input('program_id');
+        Excel::import(new CourseImport($faculty_id, $department_id, $program_id), $request->file('file'));
+        Toastr::success('Operation Successful', 'Success');
         return redirect()->route('course.index');
     }
 }

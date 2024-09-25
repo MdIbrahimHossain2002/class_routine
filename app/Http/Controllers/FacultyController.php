@@ -25,7 +25,6 @@ class FacultyController extends Controller
      */
     public function create()
     {
-
         return view('faculty.create');
     }
 
@@ -76,29 +75,24 @@ class FacultyController extends Controller
      */
     public function destroy($id)
     {
-
         $faculty = Faculty::findOrFail($id);
         $faculty->delete();
         Toastr::success('Operation Successful', 'Success');
         return redirect()->route('faculty.index');
     }
 
-    
-    public function facultyImport(){
+
+    public function facultyImport()
+    {
         return view('faculty.import');
     }
-    public function facultyImportSubmit(Request $request){
-
-
+    public function facultyImportSubmit(Request $request)
+    {
         $request->validate([
             'file' => 'required|mimes:xlsx'
         ]);
-
-        // Excel::import(new UsersImport, $request->file('file')->store('temp'));
-
         Excel::import(new FacultyImport, $request->file('file')->store('temp'));
         Toastr::success('Operation Successful', 'Success');
         return redirect()->route('faculty.index');
-
     }
 }

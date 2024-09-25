@@ -18,7 +18,7 @@ class DepartmentImport implements ToModel, WithStartRow
 
     public function __construct($faculty_id)
     {
-        $this-> faculty_id = $faculty_id;
+        $this->faculty_id = $faculty_id;
     }
 
     public function startRow(): int
@@ -27,13 +27,8 @@ class DepartmentImport implements ToModel, WithStartRow
     }
     public function model(array $col)
     {
-        // foreach ($faculty as $key => $item) {
-        // $data =
-        // }
-
-
         $data = new Department();
-        $data ->faculty_id = $this->faculty_id;
+        $data->faculty_id = $this->faculty_id;
         $data->title = $col[0];
         $data->save();
         return null;

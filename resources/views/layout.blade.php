@@ -44,20 +44,21 @@
 
         .content {
             margin-left: 250px;
-            padding: 20px;
+            padding: 10px;
             flex-grow: 1;
             margin-top: 56px;
-           
+
         }
+
         .square-input {
             border-radius: 0;
-            height: 40px;          
+            height: 40px;
             padding: 0.375rem 0.75rem;
             box-shadow: none;
         }
 
         .select2-container--bootstrap-5 .select2-selection--single {
-            border-radius: 0;        
+            border-radius: 0;
             height: 40px;
             padding: 0.375rem 0.75rem;
             border: 1px solid #ced4da;
@@ -115,12 +116,12 @@
         <a class="nav-link" href="{{ route('course.index')}}">Add/Rem Course</a>
         <a class="nav-link" href="{{ route('section.index')}}">Add/Rem Section</a>
         <a class="nav-link" href="">Add/Rem User</a>
-        <a class="nav-link" href="">Class Routine</a>
+        <a class="nav-link" href="{{ route('routine.index')}}">Class Routine</a>
         <a class="nav-link" href="">Client Specific Report </a>
 
     </div>
     <div class="content">
-        <div class="container">
+        <div class="container-fluid custom_container">
             @yield('content')
         </div>
     </div>
@@ -134,8 +135,8 @@
         $(document).ready(function() {
             $('.select2').select2({
                 placeholder: 'Select',
-                theme: 'bootstrap-5', 
-                width: '100%' 
+                theme: 'bootstrap-5',
+                width: '100%'
             });
 
             $('#faculty_id').on('change', function() {
@@ -158,26 +159,65 @@
                     $('#department_id').append('<option value="">Select Department</option>');
                 }
             });
-            $('#department_id').on('change',function(){
-                var departmentID= $(this).val();                
-                if(departmentID){
+
+            $('#department_id').on('change', function() {
+                var departmentID = $(this).val();
+                if (departmentID) {
                     $.ajax({
-                        url: "{{ route('getPrograms','')}}/" +departmentID,
-                        type:"GET",
-                        dataType:"json",
-                        success:function(data){
+                        url: "{{ route('getPrograms','')}}/" + departmentID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            // console.log(data);
+
                             $('#program_id').empty();
                             $('#program_id').append('<option value="">Select Program</option>')
-                            $.each(data,function(key,value){
-                            $('#program_id').append('<option value="'+key+'">'+value+'</option>');
+                            $.each(data.program, function(key, value) {
+                                $('#program_id').append('<option value="' + key + '">' + value + '</option>');
+                            });
+                            $('#semester_id').empty();
+                            $('#semester_id').append('<option value="">Select Semester</option>')
+                            $.each(data.semester, function(key, value) {
+                                $('#semester_id').append('<option value="' + key + '">' + value + '</option>');
+                            });
+                            $('#course_id').empty();
+                            $('#course_id').append('<option value="">Select Course</option>')
+                            $.each(data.semester, function(key, value) {
+                                $('#course_id').append('<option value="' + key + '">' + value + '</option>');
                             });
                         }
                     });
-                }else{
+                } else {
+                 
+                    $('#semester_id').empty();
+                    $('#semester_id').append('<option value="">Select Semester</option>');
                     $('#program_id').empty();
                     $('#program_id').append('<option value="">Select Department</option>');
                 }
             })
+            $('#program_id').on('change', function() {
+                var programID = $(this).val();
+                if (programID) {
+                    $.ajax({
+                        url: "{{ route('getSections','')}}/" + programID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('#section_id').empty();
+                            $('#section_id').append('<option value="">Select Section</option>')
+                            $.each(data, function(key, value) {
+                                $('#section_id').append('<option value="' + value.id + '">' + value.batch_number + ' - ' + value.section + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#section_id').empty();
+                    $('#section_id').append('<option value="">Select Program</option>');
+                }
+            })
+            
+           
+
         });
     </script>
 </body>

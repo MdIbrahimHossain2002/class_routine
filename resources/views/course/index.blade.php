@@ -1,20 +1,19 @@
 @extends('layout')
-
 @section('content')
 <div class="container mt-5">
   <div class="row mb-4">
     <div class="col-md-6 d-flex align-items-center">
-
       <h3 class="mb-0">Coures</h3>
-
     </div>
     <div class="col-md-6 d-flex justify-content-end">
+      <a class="btn btn-success btn-sm mr-2" href="{{ route('course.import') }}">
+        <i class="fas fa-plus"></i> Import
+      </a>
       <a class="btn btn-success btn-sm" href="{{ route('course.create') }}">
         <i class="fas fa-plus"></i> Add Coures
       </a>
     </div>
   </div>
-
   <div class="table-responsive">
     <table class="table table-bordered table-hover text-center align-middle">
       <thead>
@@ -60,7 +59,6 @@
       </tbody>
     </table>
   </div>
-
   <div class="d-flex justify-content-end">
     {!! $data->links() !!}
   </div>

@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Maatwebsite\Excel\Facades\Excel;
 
-
 class DepartmentController extends Controller
 {
     /**
@@ -26,7 +25,6 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-
         $faculty = Faculty::pluck('title', 'id');
         return view('department.create', compact('faculty'));
     }
@@ -89,7 +87,6 @@ class DepartmentController extends Controller
 
     public function departmentImport()
     {
-
         $faculty = Faculty::pluck('title', 'id');
         return view('department.import', compact('faculty'));
     }
@@ -98,7 +95,7 @@ class DepartmentController extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx'
         ]);
-        $faculty_id= $request->input('faculty_id');
+        $faculty_id = $request->input('faculty_id');
         Excel::import(new DepartmentImport($faculty_id), $request->file('file')->store('temp'));
         Toastr::success('Operation Successful', 'Success');
         return redirect()->route('department.index',);

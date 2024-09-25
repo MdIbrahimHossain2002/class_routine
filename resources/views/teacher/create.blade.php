@@ -7,7 +7,6 @@
                 <div class="card-header bg-light text-black">
                     <h3 class="mb-0">Add Teacher</h3>
                 </div>
-
                 <div class="card-body">
                     <form action="{{ route('teacher.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -26,13 +25,10 @@
                                 </small>
                                 @enderror
                             </div>
-
-
                             <div class="col-sm-6">
                                 <label for="department_id" class="col-form-label">Department<span class="text-danger">*</span></label>
                                 <select name="department_id" id="department_id" class="form-control select2" style="width: 100%;">
                                     <option value="">Select Department</option>
-                                
                                 </select>
                                 @error('department_id')
                                 <small class="form-text text-danger">
@@ -40,7 +36,6 @@
                                 </small>
                                 @enderror
                             </div>
-
                             <div class="col-sm-6">
                                 <label for="teacher_name" class="col-form-label">Teacher Name <span class="text-danger">*</span></label>
                                 <input type="text" name="teacher_name" id="teacher_name" class="form-control square-input" placeholder="Enter faculty name" style="width: 100%;">
@@ -50,7 +45,6 @@
                                 </small>
                                 @enderror
                             </div>
-
                             <div class="col-sm-6">
                                 <label for="teacher_phone" class="col-form-label">Teacher Phone <span class="text-danger">*</span></label>
                                 <input type="text" name="teacher_phone" id="teacher_phone" class="form-control square-input" placeholder="Enter faculty phone" style="width: 100%;">
@@ -60,7 +54,6 @@
                                 </small>
                                 @enderror
                             </div>
-
                             <div class="col-sm-6">
                                 <label for="teacher_email" class="col-form-label">Teacher Email <span class="text-danger">*</span></label>
                                 <input type="text" name="teacher_email" id="teacher_email" class="form-control square-input" placeholder="Enter faculty emial" style="width: 100%;">
@@ -71,8 +64,6 @@
                                 @enderror
                             </div>
                         </div>
-
-
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <div class="d-flex justify-content-end">
@@ -84,10 +75,8 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
 @endsection

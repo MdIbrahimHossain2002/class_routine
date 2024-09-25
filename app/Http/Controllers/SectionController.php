@@ -91,6 +91,6 @@ class SectionController extends Controller
         $section = Section::findOrfail($id);
         $section->delete();
         Toastr::success('Operation Succesfull', 'Success');
-        return redirect()->route('sec$section.index');
+        return redirect()->route('section.index');
     }
 }

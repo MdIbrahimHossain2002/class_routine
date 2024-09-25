@@ -7,7 +7,6 @@
                 <div class="card-header bg-light text-black">
                     <h3 class="mb-0">Add Room</h3>
                 </div>
-
                 <div class="card-body">
                     <form action="{{ route('room.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -26,13 +25,10 @@
                                 </small>
                                 @enderror
                             </div>
-
-
                             <div class="col-sm-6">
                                 <label for="department_id" class="col-form-label">Department<span class="text-danger">*</span></label>
                                 <select name="department_id" id="department_id" class="form-control select2" style="width: 100%;">
                                     <option value="">Select Department</option>
-                                
                                 </select>
                                 @error('department_id')
                                 <small class="form-text text-danger">
@@ -40,7 +36,6 @@
                                 </small>
                                 @enderror
                             </div>
-
                             <div class="col-sm-6">
                                 <label for="room_no" class="col-form-label">Room Number <span class="text-danger">*</span></label>
                                 <input type="text" name="room_no" id="room_no" class="form-control square-input" placeholder="Enter room number" style="width: 100%;">
@@ -50,7 +45,6 @@
                                 </small>
                                 @enderror
                             </div>
-
                             <div class="col-sm-6">
                                 <label for="student_capacity" class="col-form-label">Student Capacity<span class="text-danger">*</span></label>
                                 <input type="text" name="student_capacity" id="student_capacity" class="form-control square-input" placeholder="Enter studnet capacity" style="width: 100%;">
@@ -60,10 +54,7 @@
                                 </small>
                                 @enderror
                             </div>
-
                         </div>
-
-
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <div class="d-flex justify-content-end">
@@ -75,10 +66,8 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
 @endsection

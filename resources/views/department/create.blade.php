@@ -7,7 +7,6 @@
                 <div class="card-header bg-light text-black">
                     <h3 class="mb-0">Add Department</h3>
                 </div>
-
                 <div class="card-body">
                     <form action="{{ route('department.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -26,7 +25,6 @@
                                 </small>
                                 @enderror
                             </div>
-
                             <div class="col-sm-6">
                                 <label for="title" class="col-form-label">Title <span class="text-danger">*</span></label>
                                 <input type="text" name="title" id="title" class="form-control square-input" placeholder="Enter faculty name" style="width: 100%;">
@@ -37,8 +35,6 @@
                                 @enderror
                             </div>
                         </div>
-
-
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <div class="d-flex justify-content-end">
@@ -50,7 +46,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>

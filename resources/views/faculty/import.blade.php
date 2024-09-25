@@ -1,6 +1,4 @@
 @extends('layout')
-
-
 @section('content')
 <div class="container mt-5">
     <div class="row">
@@ -23,8 +21,6 @@
                                 @enderror
                             </div>
                         </div>
-
-
                         <div class="form-group row">
                             <div class="col-sm-10 offset-sm-2">
                                 <div class="d-flex justify-content-end">

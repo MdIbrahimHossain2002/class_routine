@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\TeacherImport;
 use App\Models\Department;
 use App\Models\Faculty;
 use App\Models\Program;
+use App\Models\Semester;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class TeacherController extends Controller
 {
@@ -36,7 +38,6 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate(['faculty_id' => 'required', 'department_id' => 'required', 'teacher_name' => 'required', 'teacher_phone' => 'required', 'teacher_email' => 'required']);
         $data = new Teacher();
         $data->faculty_id = $request->faculty_id;
@@ -98,10 +99,28 @@ class TeacherController extends Controller
         $department = Department::where('faculty_id', $faculty_id)->pluck('title', 'id');
         return response()->json($department);
     }
-    public function getPrograms($program_id)
+    public function getPrograms($department_id)
     {
-        $program = Program::where('department_id', $program_id)->pluck('title', 'id');
-        return response()->json($program);
+        $data['program'] = Program::where('department_id', $department_id)->pluck('title', 'id');
+        $data['semester'] = Semester::where('department_id', $department_id)->pluck('title', 'id');
+        return response()->json($data);
+    }
 
+    public function teacherImport(Teacher $teacher)
+    {
+        $faculty = Faculty::pluck('title', 'id');
+        $department = Department::where('faculty_id', $teacher->faculty_id)->pluck('title', 'id');
+        return view('teacher.import', compact('faculty', 'department', 'teacher'));
+    }
+    public function teacherimportSubmit(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx'
+        ]);
+        $faculty_id = $request->input('faculty_id');
+        $department_id = $request->input('department_id');
+        Excel::import(new TeacherImport($faculty_id, $department_id), $request->file('file'));
+        Toastr::success('Operation Successful', 'Success');
+        return redirect()->route('teacher.index');
     }
 }

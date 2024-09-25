@@ -8,7 +8,6 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 
-
 class RoomController extends Controller
 {
     /**

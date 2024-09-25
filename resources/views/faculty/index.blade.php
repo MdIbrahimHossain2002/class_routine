@@ -1,6 +1,4 @@
 @extends('layout')
-
-
 @section('content')
 <div class="container mt-5">
   <div class="row mb-4">
@@ -16,14 +14,13 @@
       </a>
     </div>
   </div>
-
   @if($faculty->isNotEmpty())
     <div class="table-responsive">
       <table class="table table-bordered table-hover text-center align-middle">
         <thead class="">
           <tr>
             <th scope="col">SL</th>
-            <th scope="col">Title</th>
+            <th scope="col">Faculty</th>
             <th scope="col">Action</th>
           </tr>
         </thead>

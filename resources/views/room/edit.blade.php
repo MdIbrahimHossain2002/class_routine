@@ -1,5 +1,4 @@
 @extends('layout')
-
 @section('content')
 <div class="container mt-5">
     <div class="row">
@@ -15,7 +14,6 @@
                         <div class="form-group row mb-3">
                             <div class="col-sm-6">
                                 <label for="faculty_id" class="col-form-label">Faculty <span class="text-danger">*</span></label>
-
                                 <select name="faculty_id" id="faculty_id" class="form-control select2" style="width: 100%;">
                                     <option value="">Select Faculty</option>
                                     @foreach($faculty as $key=>$item)
@@ -59,7 +57,6 @@
                                 </small>
                                 @enderror
                             </div>
-
                             <div class="col-sm-6">
                                 <label for="student_capacity" class="col-form-label">Student Capacity<span class="text-danger">*</span></label>
                                 <input type="text" name="student_capacity" id="student_capacity" class="form-control square-input" placeholder="Enter faculty name" value="{{$room->student_capacity}}" style="width: 100%;">
@@ -69,11 +66,7 @@
                                 </small>
                                 @enderror
                             </div>
-
-
                         </div>
-
-
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <div class="d-flex justify-content-end">
@@ -85,7 +78,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>

@@ -16,5 +16,17 @@ class Teacher extends Model
     {
         return $this->belongsTo(Department::class);
     }
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class);
+    }
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
     
 }

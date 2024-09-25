@@ -7,7 +7,6 @@
                 <div class="card-header bg-light text-black">
                     <h3 class="mb-0">Add Department</h3>
                 </div>
-
                 <div class="card-body">
                     <form action="{{ route('department.importSubmit') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -26,21 +25,13 @@
                                 </small>
                                 @enderror
                             </div>
-
                             <div class="form-group col mb-4">
                                 <label for="file" class="col-sm-2 col-form-label">File</label>
                                 <div class="col-sm-10">
                                     <input type="file" name="file" id="file" class="form-control square-input" placeholder="Enter dapartment name">
-                                    <!-- @error('title')
-                                    <small class="form-text text-danger">
-                                        {{ $message }}
-                                    </small>
-                                    @enderror -->
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <div class="d-flex justify-content-end">
@@ -52,7 +43,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
