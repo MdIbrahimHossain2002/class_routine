@@ -23,31 +23,29 @@
       <thead>
         <tr>
           <th scope="col">SL</th>
-          <th scope="col">Course Code</th>
-          <th scope="col">Course Title</th>
-          <th scope="col">Course Credit</th>
-          <th scope="col">Select Teacher</th>
-          <th scope="col">Day One</th>
-          <th scope="col">Day Two</th>
-          <th scope="col">Set Time</th>
-          <th scope="col">Select Room</th>
+          <th scope="col">Faculty</th>
+          <th scope="col">Department</th>
+          <th scope="col">Program</th>
+          <th scope="col">Section</th>
+          <th scope="col">Semester</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
-        @forelse($data as $teacher)
+        @forelse($data as $routine)
         <tr>
           <td>{{ $loop->iteration }}</td>
           <td> {{ @$routine->faculty->title}}</td>
-          <td> {{ @$teacher->department->title}}</td>
-          <td>{{ $teacher->teacher_name }}</td>
-          <td>{{ $teacher->teacher_phone }}</td>
-          <td>{{ $teacher->teacher_email }}</td>
+          <td> {{ @$routine->department->title}}</td>
+          <td> {{ @$routine->program->title}}</td>
+          <td> {{ @$routine->section->batch_number}} - {{ @$routine->section->section}}</td>
+          <td> {{ @$routine->semester->title}}</td>
+
           <td>
-            <a href="{{ route('routine.edit', $teacher->id) }}" class="btn btn-light btn-sm me-2">
+            <a href="{{ route('routine.edit', $routine->id) }}" class="btn btn-light btn-sm me-2">
               <i class="fas fa-edit"></i> Edit
             </a>
-            <form action="{{ route('routine.destroy', $teacher->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are You Sure You want To Delete?')">
+            <form action="{{ route('routine.destroy', $routine->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are You Sure You want To Delete?')">
               @csrf
               @method('DELETE')
               <button type="submit" class="btn btn-danger btn-sm">

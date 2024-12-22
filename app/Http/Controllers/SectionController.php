@@ -36,7 +36,7 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['faculty_id' => 'required', 'program_id' => 'required', 'department_id' => 'required', 'batch_number' => 'required', 'section' => 'required']);
+        $request->validate(['faculty_id' => 'required', 'program_id' => 'required', 'department_id' => 'required', 'batch_number' => 'required', 'section' => '']);
         $data = new Section();
         $data->faculty_id = $request->faculty_id;
         $data->department_id = $request->department_id;

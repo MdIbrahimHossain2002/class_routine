@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Course;
+use App\Models\Report;
 use App\Models\Program;
 use App\Models\Routine;
 use App\Models\Teacher;
@@ -8,6 +9,7 @@ use App\Models\Department;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
@@ -31,34 +33,44 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
-Route::get('faculty-import',[FacultyController::class,'facultyImport'])->name('faculty.import');
+Route::get('faculty-import', [FacultyController::class, 'facultyImport'])->name('faculty.import');
 Route::post('faculty-import-submit', [FacultyController::class, 'facultyImportSubmit'])->name('faculty.importSubmit');
-Route::get('department-import',[DepartmentController::class,'departmentImport'])->name('department.import');
+Route::get('department-import', [DepartmentController::class, 'departmentImport'])->name('department.import');
 Route::post('department-import-submit', [DepartmentController::class, 'departmentImportSubmit'])->name('department.importSubmit');
-Route::get('teacher-import',[TeacherController::class,'teacherImport'])->name('teacher.import');
+Route::get('teacher-import', [TeacherController::class, 'teacherImport'])->name('teacher.import');
 Route::post('teacher-import-submit', [TeacherController::class, 'teacherImportSubmit'])->name('teacher.importSubmit');
-Route::get('course-import',[CourseController::class,'courseImport'])->name('course.import');
+Route::get('course-import', [CourseController::class, 'courseImport'])->name('course.import');
 Route::post('course-import-submit', [CourseController::class, 'courseImportSubmit'])->name('course.importSubmit');
-Route::get('routine-import',[RoutineController::class,'routineImport'])->name('routine.import');
+Route::get('routine-import', [RoutineController::class, 'routineImport'])->name('routine.import');
 Route::post('routine-import-submit', [RoutineController::class, 'routineImportSubmit'])->name('routine.importSubmit');
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('faculty',FacultyController::class);
-Route::resource('department',DepartmentController::class);
-Route::resource('program',ProgramController::class);
+Route::resource('faculty', FacultyController::class);
+Route::resource('department', DepartmentController::class);
+Route::resource('program', ProgramController::class);
 Route::get('/departments/{faculty_id}', [ProgramController::class, 'getDepartments'])->name('getDepartments');
-Route::resource('semester',SemesterController::class);
-Route::resource('teacher',TeacherController::class);
-Route::resource('room',RoomController::class);
-Route::resource('course',CourseController::class);
+Route::resource('semester', SemesterController::class);
+Route::resource('teacher', TeacherController::class);
+Route::resource('room', RoomController::class);
+Route::resource('course', CourseController::class);
 Route::get('/programs/{department_id}', [TeacherController::class, 'getPrograms'])->name('getPrograms');
-Route::resource('section',SectionController::class);
-Route::resource('routine',RoutineController::class);
+Route::resource('section', SectionController::class);
+Route::resource('routine', RoutineController::class);
 Route::get('/sections/{section_id}', [RoutineController::class, 'getSections'])->name('getSections');
+Route::get('getCourse', [RoutineController::class, 'getCourse'])->name('getCourse');
+Route::get('report/batch', [ReportController::class, 'batch'])->name('report.batch');
+Route::get('report/room', [ReportController::class, 'room'])->name('report.room');
+Route::get('report/teacher', [ReportController::class, 'teacher'])->name('report.teacher');
+Route::get('report/day', [ReportController::class, 'day'])->name('report.day');
+Route::get('/get-teachers/{teacher_id}', [ReportController::class, 'getTeachers'])->name('getTeachers');
 
 
-require __DIR__.'/auth.php';
+Route::get('report/export', [ReportController::class, 'export'])->name('report.export');
+Route::get('report/export2', [ReportController::class, 'export2'])->name('report.export2');
+Route::get('report/export3', [ReportController::class, 'export3'])->name('report.export3');
+
+
+require __DIR__ . '/auth.php';

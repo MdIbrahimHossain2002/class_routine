@@ -22,14 +22,18 @@
         .sidebar {
             min-width: 250px;
             max-width: 250px;
-            height: 100vh;
+            height: calc(100vh - 56px);
+            /* Adjusted for header height */
             position: fixed;
             background-color: #e1e5e8;
             padding-top: 20px;
             padding-bottom: 20px;
             top: 56px;
             /* Adjust for header height */
+            overflow-y: auto;
+            /* Makes sidebar scrollable */
         }
+
 
         .sidebar a {
             padding: 10px 15px;
@@ -97,6 +101,7 @@
 
 <body>
     <div class="header">
+        
         <a class="navbar-brand" href="{{ route('faculty.index') }}">City University</a>
         <a class="btn btn-danger logout" href="#"
             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -106,6 +111,8 @@
             @csrf
         </form>
     </div>
+
+
     <div class="sidebar">
         <a class="navbar-brand" href="{{ route('faculty.index') }}">Add/Rem Faculty</a>
         <a class="nav-link" href="{{ route('department.index') }}">Add/Rem Department</a>
@@ -117,7 +124,17 @@
         <a class="nav-link" href="{{ route('section.index')}}">Add/Rem Section</a>
         <a class="nav-link" href="">Add/Rem User</a>
         <a class="nav-link" href="{{ route('routine.index')}}">Class Routine</a>
-        <a class="nav-link" href="">Client Specific Report </a>
+
+        <a class="nav-link" data-toggle="collapse" href="#clientReportSubmenu" role="button" aria-expanded="false" aria-controls="clientReportSubmenu">
+            Client Specific Report
+        </a>
+        <div class="collapse submenu" id="clientReportSubmenu">
+            <a class="nav-link" href="{{route('report.batch')}}">Batch Wise Routine</a>
+            <a class="nav-link" href="{{route('report.room')}}">Room Wise Routine</a>
+            <a class="nav-link" href="{{route('report.teacher')}}">Teacher Wise Routine</a>
+            <a class="nav-link" href="{{route('report.day')}}">Day Wise Routine</a>
+        </div>
+    </div>
 
     </div>
     <div class="content">
@@ -188,7 +205,7 @@
                         }
                     });
                 } else {
-                 
+
                     $('#semester_id').empty();
                     $('#semester_id').append('<option value="">Select Semester</option>');
                     $('#program_id').empty();
@@ -215,9 +232,26 @@
                     $('#section_id').append('<option value="">Select Program</option>');
                 }
             })
-            
-           
-
+            $('#teachers_department_id').on('change', function() {
+                var teachers_departmentID = $(this).val();
+                if (teachers_departmentID) {
+                    $.ajax({
+                        url: "{{route('getTeachers','')}}/" + teachers_departmentID,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('#teacher_id').empty();
+                            $('#teacher_id').append('<option value="">Select Teacher</option>')
+                            $.each(data, function(key, value) {
+                                $('#teacher_id').append('<option value="' + key + '">' + value +  '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#teacher_id').empty();
+                    $('#teacher_id').append('<option value="">Select Teacher</option>');
+                }
+            })
         });
     </script>
 </body>

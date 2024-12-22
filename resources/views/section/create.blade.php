@@ -57,7 +57,7 @@
                                 @enderror
                             </div>
                             <div class="col-sm-6">
-                                <label for="section" class="col-form-label">Section <span class="text-danger">*</span></label>
+                                <label for="section" class="col-form-label">Section </label>
                                 <input type="text" name="section" id="section" class="form-control square-input" placeholder="Enter section title" style="width: 100%;">
                                 @error('section')
                                 <small class="form-text text-danger">

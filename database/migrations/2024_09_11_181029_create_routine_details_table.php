@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('routine_details', function (Blueprint $table) {
             $table->id();      
-            $table->foreignId('routine_id')->nullable();
+            $table->foreign('routine_id')->references('id')->on('routines')->onDelete('cascade');
             $table->foreignId('course_id')->nullable();
             $table->foreignId('teacher_id')->nullable();
             $table->string('day_one')->nullable();
@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('time')->nullable();
             $table->foreignId('room_id')->nullable();
             $table->timestamps();
+
         });
     }
 
