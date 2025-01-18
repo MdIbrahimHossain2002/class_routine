@@ -65,7 +65,7 @@
                     <h4 class="text-center"> Teacher Wise Routine – Fall 2024</h4>
                     <div class="text-center mb-3">
                         <strong>City University</strong><br>
-                     
+
                         Fall-2024<br>
 
                     </div>

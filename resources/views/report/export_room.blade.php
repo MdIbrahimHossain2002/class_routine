@@ -145,7 +145,7 @@
         <h4 class="text-center">Room Wise Routine – Fall 2024</h4>
         <div class="text-center mb-3 university">
             <strong>City University</strong><br>
-          
+
             Fall-2024<br>
         </div>
         <strong> Room Number- {{$routines[0]->room->room_no}}<sup>th</sup> </strong><br>
@@ -209,7 +209,7 @@
         });
     </script>
     @endif
-   
+
 </body>
 
 </html>

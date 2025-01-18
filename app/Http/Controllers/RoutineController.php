@@ -228,14 +228,14 @@ class RoutineController extends Controller
     }
     public function routineImportSubmit(Request $request)
     {
-
         $request->validate([
             'file' => 'required|mimes:xlsx'
         ]);
 
         try {
-            $import = new RoutineImport();
-            Excel::import($import, $request->file('file'));
+            $file = $request->file('file');
+            $import = new RoutineImport($file); // Pass the file here
+            Excel::import($import, $file);
 
             $errors = $import->getErrors();
             if (!empty($errors)) {
@@ -250,5 +250,5 @@ class RoutineController extends Controller
         }
 
         return redirect()->route('routine.index');
-            }
-        }
+    }
+}

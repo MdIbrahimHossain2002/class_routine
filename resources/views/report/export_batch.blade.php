@@ -145,7 +145,7 @@
         <h4 class="text-center"> Batch Wise Routine – Fall 2024</h4>
         <div class="text-center mb-3 university">
             <strong>City University</strong><br>
-           
+
             Fall-2024<br>
         </div>
 
@@ -226,7 +226,7 @@
         });
     </script>
     @endif
-   
+
 </body>
 
 </html>

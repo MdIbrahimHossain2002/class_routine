@@ -111,7 +111,7 @@ class ReportController extends Controller
         $routineDetail = collect($routineDetail);
         return view('report.day', compact('routineDetail'));
     }
-    public function export4(Request $request)
+    public function export_day(Request $request)
     {
         $routines = Routine::where('section_id', $request->filter['section_id'])->get();
         if (isset($request->type) && $request->type == 'pdf') {
