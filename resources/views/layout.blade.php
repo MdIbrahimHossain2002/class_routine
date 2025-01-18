@@ -179,7 +179,7 @@
         <div class="text-center mb-2">
             <img src="{{ asset('assets/profile.jpeg') }}" alt="Profile Picture" class="rounded-circle mb-2"
                 style="width: 60px;">
-            <p class="fw-bold">Rafikunnabi Piash</p>
+            <p class="fw-bold">Zihad Hossain</p>
         </div>
         <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"><i class="bi bi-layers"></i> Dashboard</a>
 

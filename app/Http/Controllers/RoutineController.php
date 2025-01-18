@@ -47,7 +47,6 @@ class RoutineController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'faculty_id' => 'required',
             'department_id' => 'required',

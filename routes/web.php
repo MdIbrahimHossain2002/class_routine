@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/programs/{department_id}', [TeacherController::class, 'getPrograms'])->name('getPrograms');
     Route::resource('user', UserController::class);
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::put('user/{user}', [UserController::class, 'update'])->name('user.update');
 
     Route::resource('section', SectionController::class);
     Route::resource('routine', RoutineController::class);
