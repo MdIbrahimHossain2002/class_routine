@@ -23,17 +23,7 @@
                                         <option value="Tuesday">Tuesday</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-6">
-                                    <label for="title" class="col-form-label">Title <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" name="title" id="title" class="form-control square-input"
-                                        placeholder="Enter faculty name" style="width: 100%;">
-                                    @error('title')
-                                        <small class="form-text text-danger">
-                                            {{ $message }}
-                                        </small>
-                                    @enderror
-                                </div>
+
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
@@ -54,9 +44,10 @@
     @if (request()->has('search'))
         <div class="container">
             <div class="text-right mb-2 mt-2">
-                <a href="{{ route('report.export', ['type' => 'pdf', 'filter' => request()->all()]) }}" class="btn btn-danger">
+                <a href="{{ route('report.export_day', ['type' => 'pdf', 'filter' => request()->all()]) }}"
+                    class="btn btn-danger">
                     Export as PDF</a>
-                <a href="{{ route('report.export', ['type' => 'print', 'filter' => request()->all()]) }}"
+                <a href="{{ route('report.export_day', ['type' => 'print', 'filter' => request()->all()]) }}"
                     class="btn btn-primary"> Print</a>
             </div>
             <div class="row">
@@ -69,7 +60,7 @@
                                 <strong>City University</strong><br>
                                 Fall-2024<br>
                             </div>
-                            <h2 style="text-align: center;">{{request()->day}}</h2>
+                            <h2 style="text-align: center;">{{ request()->day }}</h2>
                             <table class="table table-bordered text-center align-middle">
                                 @php
                                     $groupedTime = $routineDetail->groupBy('time');
@@ -92,7 +83,7 @@
                                             @foreach ($groupedTime as $time => $details)
                                                 <td>
                                                     @php
-                                                        $filtered = $rooms->filter(function($room) use ($time) {
+                                                        $filtered = $rooms->filter(function ($room) use ($time) {
                                                             return $room->time === $time;
                                                         });
                                                     @endphp

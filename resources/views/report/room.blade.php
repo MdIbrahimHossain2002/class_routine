@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-light text-black">
-                    <h3 class="mb-0">Add Semester</h3>
+                    <h3 class="mb-0">Room Wise Routine</h3>
                 </div>
                 <div class="card-body">
                     <form action="{{ url()->current() }}" enctype="multipart/form-data">
@@ -20,15 +20,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-sm-6">
-                                <label for="title" class="col-form-label">Title <span class="text-danger">*</span></label>
-                                <input type="text" name="title" id="title" class="form-control square-input" placeholder="Enter faculty name" style="width: 100%;">
-                                @error('title')
-                                <small class="form-text text-danger">
-                                    {{ $message }}
-                                </small>
-                                @enderror
-                            </div>
+
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-12">

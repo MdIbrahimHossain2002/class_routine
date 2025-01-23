@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-light text-black">
-                    <h3 class="mb-0">View Routine</h3>
+                    <h3 class="mb-0">Teacher Wise Routine</h3>
                 </div>
                 <div class="card-body">
                     <form action="{{ url()->current() }}" enctype="multipart/form-data">

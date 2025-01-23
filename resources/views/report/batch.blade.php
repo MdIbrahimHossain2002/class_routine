@@ -20,15 +20,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-sm-6">
-                                <label for="title" class="col-form-label">Title <span class="text-danger">*</span></label>
-                                <input type="text" name="title" id="title" class="form-control square-input" placeholder="Enter faculty name" style="width: 100%;">
-                                @error('title')
-                                <small class="form-text text-danger">
-                                    {{ $message }}
-                                </small>
-                                @enderror
-                            </div>
+            
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-12">

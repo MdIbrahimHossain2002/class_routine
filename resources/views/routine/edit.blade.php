@@ -176,7 +176,7 @@
                             <div class="col-sm-1">
                                 <label for="time" class="col-form-label">Time <span class="text-danger">*</span></label>
                                 <select name="time[]" id="time" class="form-control select2" style="width: 100%;">
-                                    <option value="">Select Time</option>
+                                    <option value=" ">Select Time</option>
                                     <option value="9.00AM-10.25AM" {{ $detail->time == '9.00AM-10.25AM' ? 'selected':''}}>9.00AM-10.25AM</option>
                                     <option value="10.30AM-11.50AM" {{ $detail->time == '10.30AM-11.50AM' ? 'selected':''}}>10.30AM-11.50AM</option>
                                     <option value="12.00PM-1.10PM" {{ $detail->time == '12.00PM-1.10PM' ? 'selected':''}}>12.00PM-1.10PM</option>
@@ -275,8 +275,8 @@
         $('.extra-fields-course').click(function(e) {
             e.preventDefault();
             row++;
-            var newFields = `              
-               
+            var newFields = `
+
                         <div class="new_course row">
                             <div class="col-sm-2">
                                 <label for="course_id" class="col-form-label">Course <span class="text-danger">*</span></label>
@@ -293,7 +293,7 @@
                                 @enderror
                             </div>
 
-                        
+
                             <div class="col-sm-2">
                                 <label for="course_id" class="col-form-label">Courese Title <span class="text-danger">*</span></label>
                                 <input type="text"  id="course_title_${row}" class="form-control square-input" disabled style="width: 100%;">

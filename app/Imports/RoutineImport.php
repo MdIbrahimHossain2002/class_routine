@@ -2,128 +2,88 @@
 
 namespace App\Imports;
 
-use App\Models\Course;
-use App\Models\Faculty;
-use App\Models\Program;
 use App\Models\Routine;
-use App\Models\Department;
-use App\Models\Room;
 use App\Models\RoutineDetail;
+use App\Models\Faculty;
+use App\Models\Department;
+use App\Models\Program;
 use App\Models\Section;
 use App\Models\Semester;
+use App\Models\Course;
 use App\Models\Teacher;
+use App\Models\Room;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Facades\Excel;
 
-class RoutineImport implements WithMultipleSheets, ToCollection
+class RoutineImport implements ToCollection
 {
-    protected $errors = [];
-
-    protected $file;
-
-    // Constructor to accept file path or handle request directly
-    public function __construct($file = null)
-    {
-        $this->file = $file;
-    }
+    public $errors = [];
 
     public function collection(Collection $rows)
     {
         DB::beginTransaction();
         try {
             $this->errors = [];
+
+            // Extract header row details (Faculty, Department, etc.)
             $firstRow = $rows->first();
 
-            // Process the first row (same as before for routine data)
             $faculty = Faculty::where('title', $firstRow[0])->first();
-            if (!$faculty) {
-            Log::error('faculty Import Error: ');
-
-                $this->errors[] = "Faculty not found for Title: {$firstRow[0]}";
-            }
-            $facultyId = $faculty ? $faculty->id : null;
-
             $department = Department::where('title', $firstRow[1])->first();
-            if (!$department) {
-            Log::error('department Import Error: ');
-
-                $this->errors[] = "Department not found for Title: {$firstRow[1]}";
-            }
-            $departmentId = $department ? $department->id : null;
-
             $program = Program::where('title', $firstRow[2])->first();
-            if (!$program) {
-            Log::error('program Import Error: ');
-
-                $this->errors[] = "Program not found for Title: {$firstRow[2]}";
-            }
-            $programId = $program ? $program->id : null;
-
             $sectionRow = explode('-', $firstRow[3]);
             $section = Section::where([
                 'batch_number' => $sectionRow[0] ?? null,
                 'section' => $sectionRow[1] ?? null
             ])->first();
-            if (!$section) {
-            Log::error('section Import Error: ');
-
-                $this->errors[] = "Section not found for Batch and Section: {$firstRow[3]}";
-            }
-            $sectionId = $section ? $section->id : null;
-
             $semester = Semester::where('title', $firstRow[4])->first();
-            if (!$semester) {
-            Log::error('semester Import Error: ');
 
-                $this->errors[] = "Semester not found for Title: {$firstRow[4]}";
-            }
-            $semesterId = $semester ? $semester->id : null;
-
-            if (!empty($this->errors)) {
+            if (!$faculty || !$department || !$program || !$section || !$semester) {
+                $this->errors[] = "Invalid Routine data in header row.";
                 DB::rollBack();
                 return;
             }
 
-            // Create the Routine
             $routine = Routine::create([
-                'faculty_id' => $facultyId,
-                'department_id' => $departmentId,
-                'program_id' => $programId,
-                'section_id' => $sectionId,
-                'semester_id' => $semesterId,
+                'faculty_id' => $faculty->id,
+                'department_id' => $department->id,
+                'program_id' => $program->id,
+                'section_id' => $section->id,
+                'semester_id' => $semester->id,
             ]);
 
-            // Import routine details from each row
             foreach ($rows->skip(2) as $row) {
                 $course = Course::where('course_code', $row[0])->first();
-                if (!$course) {
-            Log::error('course Import Error: ');
-
-                    $this->errors[] = "Course not found for Course Code: {$row[0]}";
-                    continue;
-                }
-
                 $teacher = Teacher::where('teacher_email', $row[3])->first();
-                if (!$teacher) {
-            Log::error('teacher Import Error: ');
-
-                    $this->errors[] = "Teacher not found for Course Code: {$row[0]}";
-                    continue;
-                }
-
                 $room = Room::where('room_no', $row[7])->first();
-                if (!$room) {
-            Log::error('room Import Error: ');
 
-                    $this->errors[] = "Room not found for Course Code: {$row[0]}";
+                if (!$course || !$teacher || !$room) {
+                    $this->errors[] = "Invalid details for Course Code: {$row[0]}";
                     continue;
                 }
 
-                // Create routine detail
+                // Check for conflicts
+                $conflicts = RoutineDetail::where(function ($query) use ($row, $room) {
+                    $query->where('day_one', $row[4])
+                        ->where('time', $row[6])
+                        ->where('room_id', $room->id);
+                })->orWhere(function ($query) use ($row, $room) {
+                    $query->where('day_two', $row[5])
+                        ->where('time', $row[6])
+                        ->where('room_id', $room->id);
+                })->with(['routine.section', 'routine.semester'])->get();
+
+                if ($conflicts->isNotEmpty()) {
+                    foreach ($conflicts as $conflict) {
+                        $batchInfo = "Batch: " . $conflict->routine->section->batch_number . "-" . $conflict->routine->section->section;
+                        $semesterInfo = "Semester: " . $conflict->routine->semester->title;
+                        $this->errors[] = "Already Assigned for Room: {$room->room_no}, Time: {$row[6]}, Days: {$row[4]} or {$row[5]} with {$batchInfo}, {$semesterInfo}.";
+                    }
+                    continue;
+                }
+
+                // Save routine details
                 RoutineDetail::create([
                     'routine_id' => $routine->id,
                     'course_id' => $course->id,
@@ -135,11 +95,9 @@ class RoutineImport implements WithMultipleSheets, ToCollection
                 ]);
             }
 
-            // Check for errors
             if (!empty($this->errors)) {
-            Log::error('semester Import Error: ',$this->errors);
-
-                throw new \Exception("Errors occurred during the RoutineDetail insertion.");
+                DB::rollBack();
+                throw new \Exception("Errors occurred during import.");
             }
 
             DB::commit();
@@ -153,23 +111,4 @@ class RoutineImport implements WithMultipleSheets, ToCollection
     {
         return $this->errors;
     }
-
-    public function sheets(): array
-    {
-        if (!$this->file) {
-            throw new \Exception('No file provided for import.');
-        }
-
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($this->file->getPathname());
-        $sheetCount = $spreadsheet->getSheetCount();
-
-        $sheets = [];
-        for ($i = 0; $i < $sheetCount; $i++) {
-            $sheets[] = new RoutineImport(); // Or another class if sheets have different processing logic
-        }
-
-        return $sheets;
-    }
-
-
 }

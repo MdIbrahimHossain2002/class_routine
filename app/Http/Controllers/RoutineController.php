@@ -64,23 +64,35 @@ class RoutineController extends Controller
             'day_two' => 'required|array|min:1',
             'room_id' => 'required|array|min:1',
             'room_id.*' => 'required',
-        ], [
-            'faculty_id.required' => 'The Faculty field is required.',
-            'department_id.required' => 'The Department field is required.',
-            'program_id.required' => 'The Program field is required.',
-            'semester_id.required' => 'The Semester field is required.',
-            'section_id.required' => 'The Section field is required.',
-            'course_id.required' => 'At least one Course is required.',
-            'course_id.*.required' => 'Course field is required for row :position.',
-            'teacher_id.required' => 'At least one Teacher is required.',
-            'teacher_id.*.required' => 'Teacher field is required for row :position.',
-            'time.required' => 'At least one Time is required.',
-            'time.*.required' => 'Time field is required for row :position.',
-            'day_one.required' => 'At least one Day is required.',
-            'day_one.*.required' => 'Day field is required for row :position.',
-            'room_id.required' => 'At least one Room is required.',
-            'room_id.*.required' => 'Room field is required for row :position.',
         ]);
+
+        $conflictErrors = [];
+        foreach ($request['course_id'] as $index => $course_id) {
+            $dayOne = $request['day_one'][$index];
+            $dayTwo = $request['day_two'][$index];
+            $time = $request['time'][$index];
+            $roomId = $request['room_id'][$index];
+
+            // Check for conflicts
+            $conflict = RoutineDetail::where(function ($query) use ($dayOne, $time, $roomId) {
+                $query->where('day_one', $dayOne)
+                    ->where('time', $time)
+                    ->where('room_id', $roomId);
+            })->orWhere(function ($query) use ($dayTwo, $time, $roomId) {
+                $query->where('day_two', $dayTwo)
+                    ->where('time', $time)
+                    ->where('room_id', $roomId);
+            })->exists();
+
+            if ($conflict) {
+                $conflictErrors[] = "Already assigned for Room: {$roomId}, Time: {$time}, Day: {$dayOne} or {$dayTwo}";
+            }
+        }
+
+        if (!empty($conflictErrors)) {
+            return redirect()->back()->withErrors($conflictErrors);
+        }
+
         $data = new Routine();
         $data->faculty_id = $request->faculty_id;
         $data->department_id = $request->department_id;
@@ -88,8 +100,8 @@ class RoutineController extends Controller
         $data->semester_id = $request->semester_id;
         $data->section_id = $request->section_id;
         $data->save();
-        foreach ($request['course_id'] as $index => $course_id) {
 
+        foreach ($request['course_id'] as $index => $course_id) {
             $routineDetail = new RoutineDetail();
             $routineDetail->routine_id = $data->id;
             $routineDetail->course_id = $course_id;
@@ -100,7 +112,8 @@ class RoutineController extends Controller
             $routineDetail->room_id = $request['room_id'][$index];
             $routineDetail->save();
         }
-        Toastr::success('Operation Succesfull', 'Success');
+
+        Toastr::success('Operation Successful', 'Success');
         return redirect()->route('routine.index');
     }
 
@@ -175,6 +188,35 @@ class RoutineController extends Controller
         $data->semester_id = $request->semester_id;
         $data->section_id = $request->section_id;
         $data->update();
+
+
+        $conflictErrors = [];
+        foreach ($request['course_id'] as $index => $course_id) {
+            $dayOne = $request['day_one'][$index];
+            $dayTwo = $request['day_two'][$index];
+            $time = $request['time'][$index];
+            $roomId = $request['room_id'][$index];
+
+            // Check for conflicts
+            $conflict = RoutineDetail::where(function ($query) use ($dayOne, $time, $roomId) {
+                $query->where('day_one', $dayOne)
+                    ->where('time', $time)
+                    ->where('room_id', $roomId);
+            })->orWhere(function ($query) use ($dayTwo, $time, $roomId) {
+                $query->where('day_two', $dayTwo)
+                    ->where('time', $time)
+                    ->where('room_id', $roomId);
+            })->first();
+
+            if ($conflict && $conflict->routine_id != $routine->id) {
+                $conflictErrors[] = "Already assigned for Room: {$roomId}, Time: {$time}, Day: {$dayOne} or {$dayTwo}";
+            }
+        }
+
+        if (!empty($conflictErrors)) {
+            return redirect()->back()->withErrors($conflictErrors);
+        }
+
         RoutineDetail::where('routine_id', $data->id)->delete();
         foreach ($request['course_id'] as $index => $course_id) {
 

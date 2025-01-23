@@ -113,13 +113,13 @@ class ReportController extends Controller
     }
     public function export_day(Request $request)
     {
-        $routines = Routine::where('section_id', $request->filter['section_id'])->get();
+        $routineDetail = RoutineDetail::where('day_one', $request->filter['day'])->orWhere('day_two', $request->filter['day'])->get();
         if (isset($request->type) && $request->type == 'pdf') {
-            $pdf = PDF::loadView('report.export_batch', compact('routines'));
-            return $pdf->download('batch_wise_routine.pdf');
+            $pdf = PDF::loadView('report.export_day', compact('routineDetail'));
+            return $pdf->download('day_wise_routine.pdf');
         } else if (isset($request->type) && $request->type == 'print') {
             $is_print = true;
-            return view('report.export_batch', compact('routines', 'is_print'));
+            return view('report.export_day', compact('routineDetail', 'is_print'));
         }
     }
 }
