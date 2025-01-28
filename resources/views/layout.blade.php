@@ -157,7 +157,6 @@
             <img src="{{ asset('assets/lg-removebg-preview.png') }}" alt="University Logo" class="logo">
         </div>
 
-
         <a class="navbar-brand" href="{{ route('faculty.index') }}">City University Routine Managment System</a>
 
         <form method="POST" action="{{ route('logout') }}">

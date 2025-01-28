@@ -71,7 +71,7 @@ class RoutineController extends Controller
             $dayOne = $request['day_one'][$index];
             $dayTwo = $request['day_two'][$index];
             $time = $request['time'][$index];
-            $roomId = $request['room_id'][$index];
+            $roomId = $request['room_no'][$index];
 
             // Check for conflicts
             $conflict = RoutineDetail::where(function ($query) use ($dayOne, $time, $roomId) {

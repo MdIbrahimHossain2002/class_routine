@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::get('report/export2', [ReportController::class, 'export2'])->name('report.export2');
     Route::get('report/export3', [ReportController::class, 'export3'])->name('report.export3');
     Route::get('report/export_day', [ReportController::class, 'export_day'])->name('report.export_day');
+
 });
 
 

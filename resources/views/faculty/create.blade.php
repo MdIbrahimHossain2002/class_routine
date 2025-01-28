@@ -11,7 +11,7 @@
                     <form action="{{ route('faculty.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row mb-3">
-                            <label for="title" class="col-sm-2 col-form-label">Title</label>
+                            <label for="title" class="col-sm-2 col-form-label">Faculty</label>
                             <div class="col-sm-10">
                                 <input type="text" name="title" id="title" class="form-control" placeholder="Enter faculty name">
                                 @error('title')
